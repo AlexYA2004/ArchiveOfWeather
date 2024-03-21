@@ -1,0 +1,120 @@
+﻿@using System.Globalization
+@model ArchiveOfWeather.Models.YearlyWeatherStatisticViewModel
+
+<h1 class="text-center">Просмотр архивов погодных условий в городе Москве</h1>
+
+<div class="container">
+    <nav class="navbar justify-content-center">
+        <ul class="nav d-inline-flex fs-5 mt-4 p-5">
+            <li class="nav-item mx-2">
+                <a class="btn btn-primary w-100" href="?viewType=yearly">По годам</a>
+            </li>
+            <li class ="nav-item mx-2" >
+                <a class="btn btn-primary w-100" href="?viewType=monthly">По месяцам</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+@try
+{
+
+    @if (Model.ViewType == ArchiveOfWeather.Enums.ViewType.Yearly)
+    {
+        <h2>Просмотр по годам</h2>
+    
+            <h3>Год: @Model.SelectedYear</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Месяц</th>
+                        <th>День</th>
+                        <th>Температура(°C)</th>
+                        <th>Скорость ветра (м/м)</th>
+                        <th>Атмосферное давление (мм.рт.ст.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var monthData in Model.YearWeatherData.MonthlyData)
+                    {
+                        foreach (var dailyData in monthData.DailyData)
+                        {
+                            <tr>
+                                <td>@DateTimeFormatInfo.CurrentInfo.GetMonthName(monthData.Month)</td>
+                                <td>@dailyData.Date.ToShortDateString()</td>
+                                <td>@dailyData.Temperature</td>
+                                <td>@dailyData.WindSpeed</td>
+                                <td>@dailyData.AtmosphericPressure</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+
+        <nav class=" d-flex justify-content-center">
+            @for (var year = Model.FirstYear; year <= Model.LastYear; year++)
+            {
+                <a class="text-center mx-2" href="?viewType=yearly&year=@year">@year</a>
+            }
+        </nav>
+    }
+
+@if (Model.ViewType == ArchiveOfWeather.Enums.ViewType.Monthly)
+{
+    <h2>Просмотр по месяцам</h2>
+
+    <h3>Год: @Model.SelectedYear</h3>
+    <h4>Месяц: @DateTimeFormatInfo.CurrentInfo.GetMonthName(Model.SelectedMonth)</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>День</th>
+                <th>Температура(°C)</th>
+                <th>Скорость ветра (м/м)</th>
+                <th>Атмосферное давление (мм.рт.ст.)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dailyData in Model.MonthlyWeatherData.DailyData)
+            {
+                <tr>
+                    <td>@dailyData.Date.ToShortDateString()</td>
+                    <td>@dailyData.Temperature</td>
+                    <td>@dailyData.WindSpeed</td>
+                    <td>@dailyData.AtmosphericPressure</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav class=" d-flex justify-content-center">
+        @if (Model.SelectedMonth > 1)
+        {
+            var previousMonth = Model.SelectedMonth - 1;
+            var previousYear = Model.SelectedYear;
+            <a class="mx-2" href="?viewType=monthly&year=@previousYear&month=@previousMonth">Предыдущий месяц: @DateTimeFormatInfo.CurrentInfo.GetMonthName(previousMonth) @previousYear</a>
+        }
+        @if (Model.SelectedMonth == 1)
+        {
+            var previousMonth = 12; 
+            var previousYear = Model.SelectedYear - 1;
+            <a class="mx-2" href="?viewType=monthly&year=@previousYear&month=@previousMonth">Предыдущий месяц: @DateTimeFormatInfo.CurrentInfo.GetMonthName(previousMonth) @previousYear</a>
+        }
+       
+  
+        @if (Model.SelectedMonth < 12)
+        {
+            var nextMonth = Model.SelectedMonth + 1;
+            var nextYear = Model.SelectedYear;
+            <a class="mx-2" href="?viewType=monthly&year=@nextYear&month=@nextMonth">Следующий месяц: @DateTimeFormatInfo.CurrentInfo.GetMonthName(nextMonth) @nextYear</a>
+        }
+    </nav>
+    }
+}
+catch(Exception ex)
+{
+    <script>
+        window.location.href = '@Url.Action("StatisticError", "Home")';
+    </script>
+}

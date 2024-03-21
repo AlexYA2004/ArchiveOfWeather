@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Загрузка архивов погодных условий";
+}
+
+<div class="container">
+    <h1 class="text-center fs-2">Загрузка архивов погодных условий в городе Москве</h1>
+
+    <!-- Форма загрузки файлов -->
+    <form method="post" enctype="multipart/form-data" class="mt-4" asp-controller="Weather" asp-action="UploadExcelFiles">
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <label for="weatherFile" class="form-label">Выберите файл(ы) Excel:</label>
+            <input type="file" class="form-control" id="weatherFile" name="weatherFile" multiple required>
+        </div>
+        <button type="submit" class="btn btn-primary">Загрузить</button>
+    </form>
+</div>

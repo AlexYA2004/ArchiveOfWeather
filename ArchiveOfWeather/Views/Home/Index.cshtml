@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Главная страница";
+}
+<div class="container mb-5">
+    <h1 class="text-center fs-2">Добро пожаловать!</h1>
+    <p></p>
+ </div>
+
+ <div class="container">
+    <nav class="navbar justify-content-center">
+        <ul class="nav flex-column fs-5 mt-4 p-5 border rounded">
+            <li class="nav-item">
+                <p class="fs-3 text-center">Меню</p>
+            </li>
+            <li class="nav-item m-2">
+                <a class="btn btn-primary btn-lg w-100" href="@Url.Action("WeatherStatistic","Weather")" role="button">Просмотр архивов погодных условий в городе Москве</a>
+            </li>
+            <li class="nav-item m-2">
+                <a class="btn btn-primary btn-lg w-100" href="@Url.Action("UploadWeatherStatistic","Weather")" role="button">Загрузка архивов погодных условий в городе Москве</a>
+            </li>
+        </ul>
+    </nav>
+</div>

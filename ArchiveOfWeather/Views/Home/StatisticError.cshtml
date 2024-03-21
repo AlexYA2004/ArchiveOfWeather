@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Ошибка";
+}
+
+<h1 class="text-danger">Ошибка</h1>
+<h2 class="text-danger">Данные из этого периода не загружены</h2>
+
+<nav class="navbar justify-content-center">
+    <ul class="nav flex-column fs-5 mt-4 p-5 border rounded">
+
+        <li class="nav-item m-2">
+            <a class="btn btn-primary btn-lg w-100" href="@Url.Action("Index","Home")" role="button">Перейти в главное меню</a>
+        </li>
+        <li class="nav-item m-2">
+            <a class="btn btn-primary btn-lg w-100" href="@Url.Action("UploadWeatherStatistic","Weather")" role="button">Загрузить недостающие данные</a>
+        </li>
+    </ul>
+</nav>
